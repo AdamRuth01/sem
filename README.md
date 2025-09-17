@@ -4,7 +4,7 @@
 
 
 # Software Engineering Methods
-![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/Adamruth01/sem/docker-image.yml?branch=<develop>)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/Adamruth01/sem/docker-image.yml?branch=develop)
 
 
 [![LICENSE](https://img.shields.io/github/license/Adamruth01/sem.svg?style=flat-square)](https://github.com/Adamruth01/sem/blob/master/LICENSE)
