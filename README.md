@@ -12,3 +12,4 @@
 [![Releases](https://img.shields.io/github/release/Adamruth01/sem/all.svg?style=flat-square)](https://github.com/Adamruth01/sem/releases)
 A Java + Docker project with CI/CD using GitHub Actions.
 
+testing branch develop updating MD file and continue on to lab 3 
