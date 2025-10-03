@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  mysql:
+  mysql-db:
     image: mysql:8.0
     container_name: mysql-db
     restart: always
@@ -12,3 +12,14 @@ services:
     volumes:
       - ./mysql-data:/var/lib/mysql
       - ./init:/docker-entrypoint-initdb.d
+
+  sem-app:
+    build: .
+    depends_on:
+      - mysql-db
+    environment:
+      DB_HOST: mysql-db
+      DB_PORT: 3306
+      DB_NAME: employees
+      DB_USER: root
+      DB_PASS: rootpass

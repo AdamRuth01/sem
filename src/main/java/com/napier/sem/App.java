@@ -32,7 +32,8 @@ public class App
                 // Wait a bit for db to start
                 Thread.sleep(30000);
                 // Connect to database
-                con = DriverManager.getConnection("jdbc:mysql://db:3306/employees?useSSL=false", "root", "rootpass");
+                con = DriverManager.getConnection("jdbc:mysql://mysql-db:3306/employees?useSSL=false", "root", "rootpass");
+
                 System.out.println("Successfully connected");
                 // Wait a bit
                 Thread.sleep(10000);
