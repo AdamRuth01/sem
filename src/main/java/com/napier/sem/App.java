@@ -1,18 +1,21 @@
 package com.napier.sem;
 
-import com.mongodb.MongoClient;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoCollection;
-import org.bson.Document;
 import java.sql.*;
 
 public class App
 {
-    public static void main(String[] args)
+    /**
+     * Connection to MySQL database.
+     */
+    private Connection con = null;
+
+    /**
+     * Connect to the MySQL database.
+     */
+    public void connect()
     {
         try
         {
-            // Load Database driver
             Class.forName("com.mysql.cj.jdbc.Driver");
         }
         catch (ClassNotFoundException e)
@@ -21,47 +24,98 @@ public class App
             System.exit(-1);
         }
 
-        // Connection to the database
-        Connection con = null;
-        int retries = 100;
+        int retries = 10;
         for (int i = 0; i < retries; ++i)
         {
-            System.out.println("Connecting to database...");
+            System.out.println("Connecting to database... attempt " + (i + 1));
             try
             {
-                // Wait a bit for db to start
-                Thread.sleep(30000);
-                // Connect to database
-                con = DriverManager.getConnection("jdbc:mysql://mysql-db:3306/employees?useSSL=false", "root", "rootpass");
+                con = DriverManager.getConnection(
+                        "jdbc:mysql://mysql-db:3306/employees?allowPublicKeyRetrieval=true&useSSL=false",
+                        "root",
+                        "rootpass"
+                );
 
                 System.out.println("Successfully connected");
-                // Wait a bit
-                Thread.sleep(10000);
-                // Exit for loop
                 break;
             }
             catch (SQLException sqle)
             {
-                System.out.println("Failed to connect to database attempt " + Integer.toString(i));
+                System.out.println("Failed to connect to database attempt " + (i + 1));
                 System.out.println(sqle.getMessage());
-            }
-            catch (InterruptedException ie)
-            {
-                System.out.println("Thread interrupted? Should not happen.");
+                
+                if (i < retries - 1) {
+                    try {
+                        Thread.sleep(5000); // Wait 5 seconds before retry
+                    } catch (InterruptedException ie) {
+                        System.out.println("Thread interrupted? Should not happen.");
+                        break;
+                    }
+                }
             }
         }
+    }
 
+    /**
+     * Disconnect from the MySQL database.
+     */
+    public void disconnect()
+    {
         if (con != null)
         {
             try
             {
-                // Close connection
                 con.close();
+                System.out.println("Connection closed.");
             }
             catch (Exception e)
             {
-                System.out.println("Error closing connection to database");
+                System.out.println("Error closing connection to database.");
             }
         }
     }
+
+    /**
+     * Retrieve employee information from the database.
+     * @param empId Employee ID
+     */
+    public void getEmployeeInfo(int empId)
+    {
+        if (con == null)
+        {
+            System.out.println("No database connection.");
+            return;
+        }
+
+        try
+        {
+            String query = "SELECT emp_no, first_name, last_name FROM employees WHERE emp_no = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setInt(1, empId);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next())
+            {
+                int empNo = rs.getInt("emp_no");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+
+                System.out.println("Employee ID: " + empNo);
+                System.out.println("Name: " + firstName + " " + lastName);
+            }
+
+            rs.close();
+            stmt.close();
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Error retrieving employee information: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Main method to run the application.
+     */
+
 }
