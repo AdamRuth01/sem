@@ -9,7 +9,16 @@ public class Main {
         app.connect();
 
         // Example: retrieve employee with ID 10001
-        app.getEmployeeInfo(10001);
+        Employee emp = app.getEmployeeInfo(10001);
+
+        if (emp == null) {
+            System.out.println("Ingen anställd hittades med ID 10001.");
+        } else {
+            app.displayEmployee(emp);
+        }
+
+
+
 
         app.disconnect();
     }
