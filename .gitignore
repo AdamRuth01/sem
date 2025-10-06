@@ -37,9 +37,5 @@ build/
 ### Mac OS ###
 .DS_Store
 
-# IntelliJ-filer
-.idea/
-
-# Docker-volymer
+### Docker MySQL ###
 mysql-data/
-db/test_db/
