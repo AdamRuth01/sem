@@ -1,6 +1,6 @@
 package com.napier.sem;
 
-public class employee {
+public class Employee {
 
     public int emp_no;
 
@@ -33,6 +33,8 @@ public class employee {
      * Employee's manager
      */
     public String manager;
+
+
 
 
 }
